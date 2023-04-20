@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/ExampleFSM/ExampleFSM.unity
+    guid: 4893145005591a446aff42c95ee09d9a
   m_configObjects: {}
