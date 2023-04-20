@@ -17,7 +17,6 @@ namespace AxGrid.Tools.Binders{
 		/// </summary>
 		public string buttonName = "";
 
-
 		public string enableField = "";
 
 		/// <summary>
@@ -39,7 +38,6 @@ namespace AxGrid.Tools.Binders{
 		/// Срабатывать на нажатие
 		/// </summary>
 		public bool onKeyPress = false;
-
 
 		/// <summary>
 		/// Отправляет события во вспомогательную UI fsm
@@ -132,8 +130,6 @@ namespace AxGrid.Tools.Binders{
 			{
 				Model?.EventManager.Invoke("SoundPlay", "Click");
 				
-				//if (isFsmUI) FsmUI.Fsm?.Invoke("OnBtn", buttonName); //TODO как то покрасивее написать
-				//else 
 				Settings.Fsm?.Invoke("OnBtn", buttonName);
 				
 				Model?.EventManager.Invoke($"On{buttonName}Click");
@@ -158,7 +154,7 @@ namespace AxGrid.Tools.Binders{
 					downTime = 0;
 				}
 			}
-			if (!onKeyPress && Input.GetKeyUp(key)) Log.Info("Key:{0} / D:{1} / C:{2}", key, down, cancel);
+			if (!onKeyPress && Input.GetKeyUp(key)) Log.Info($"Key:{key} / D:{down} / C:{cancel}");
 			if (!onKeyPress && Input.GetKeyUp(key)) {
 					OnClick();
 				down = true;

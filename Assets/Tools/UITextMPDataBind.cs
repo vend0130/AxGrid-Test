@@ -33,7 +33,7 @@ namespace AxGrid.Tools.Binders
             }
             catch (Exception e)
             {
-                Log.Error("Error get Component:{0}", e.Message);
+                Log.Error($"Error get Component:{e.Message}");
             }
         }
         
@@ -66,11 +66,15 @@ namespace AxGrid.Tools.Binders
             try
             {
                 if (modelChanged)
-                   Model.EventManager.RemoveAction("ModelChanged", Changed);
+                    Model.EventManager.RemoveAction("ModelChanged", Changed);
                 else
                     foreach (var fieldName in fieldNames)
-                       Model.EventManager.RemoveAction($"On{fieldName}Changed", Changed);
-            }catch(Exception) {}
+                        Model.EventManager.RemoveAction($"On{fieldName}Changed", Changed);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         protected virtual void Changed()

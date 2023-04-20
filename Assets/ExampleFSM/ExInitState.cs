@@ -1,4 +1,5 @@
-﻿using AxGrid.FSM;
+﻿using AxGrid;
+using AxGrid.FSM;
 using UnityEngine;
 
 namespace ExampleFSM
