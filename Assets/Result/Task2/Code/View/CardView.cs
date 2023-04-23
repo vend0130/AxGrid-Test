@@ -2,13 +2,15 @@
 using AxGrid.Base;
 using AxGrid.Path;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 
 namespace Result.Task2.Code.View
 {
-    public class CardView : MonoBehaviourExt
+    public class CardView : MonoBehaviourExt, IPointerClickHandler
     {
         [SerializeField] private SortingGroup _sortingGroup;
+        [SerializeField] private Collider2D _collider;
 
         public string Id { get; private set; }
 
@@ -25,11 +27,22 @@ namespace Result.Task2.Code.View
             _sortingGroup.sortingOrder = callBack ? -1 : order;
 
             Vector2 currentPoint = transform.position;
-
+            
             Path
                 .EasingLinear(TimeMove, 0, 1,
                     (f) => transform.position = Vector2.Lerp(currentPoint, targetPosition, f))
-                .Action(() => Settings.Fsm.Invoke(Keys.CardEndMove));
+                .Action(() =>
+                {
+                    _sortingGroup.sortingOrder = order;
+                    if (callBack)
+                        Settings.Fsm.Invoke(Keys.CardEndMove);
+                });
         }
+
+        public void ChangeColliderState() =>
+            _collider.enabled = false;
+
+        public void OnPointerClick(PointerEventData _) =>
+            Settings.Fsm.Invoke(Keys.ClickOnCard, Id);
     }
 }

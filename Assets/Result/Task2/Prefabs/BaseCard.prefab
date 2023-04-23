@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sortingGroup: {fileID: 3166427809210359834}
+  _collider: {fileID: 2727718749765284609}
 --- !u!1 &8001995186916154972
 GameObject:
   m_ObjectHideFlags: 0

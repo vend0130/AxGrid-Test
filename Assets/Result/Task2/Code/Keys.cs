@@ -6,9 +6,11 @@
 
         public const string Counter = "Counter";
 
+        public const string CurrentCollection = "CurrentCollection";
         public const string FirstCollection = "FirstCollection";
-        public const string SecondCollection = "FirstCollection";
+        public const string SecondCollection = "SecondCollection";
 
         public const string CardEndMove = "EndMove";
+        public const string ClickOnCard = "ClicOnCard";
     }
 }
