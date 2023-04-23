@@ -28,7 +28,9 @@ namespace Result.Task2.Code.States
 
             GameObject prefab = _cards.GetRandomElement();
             CardView card = Object.Instantiate(prefab).GetComponent<CardView>();
+
             card.InitId($"Card_{counter}");
+            Model.Get<List<CardView>>(Keys.FirstCollection).Add(card);
 
             counter++;
             Model.Set(Keys.Counter, counter);
