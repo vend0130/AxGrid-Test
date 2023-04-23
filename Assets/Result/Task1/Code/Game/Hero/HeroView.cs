@@ -19,6 +19,7 @@ namespace Result.Task1.Code.Game.Hero
         [Bind(Keys.HeroMoveTo)]
         private void MoveTo(Vector2 targetPoint)
         {
+            Path.StopPath();
             Path = new CPath();
 
             float direction = ((Vector2)transform.position - targetPoint).x;
