@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Result.Task1.Code
 {
-    public class Bootstrap : MonoBehaviourExtBind
+    public class Bootstrap : MonoBehaviourExt
     {
         [SerializeField] private Transform _character;
 
@@ -19,16 +19,17 @@ namespace Result.Task1.Code
         [OnStart]
         private void StartThis()
         {
-            Settings.Fsm.Start(nameof(HomeState));
+            Settings.Fsm.Start(nameof(BootstrapState));
         }
 
         private void CreateFsm()
         {
             Settings.Fsm = new FSM();
+            Settings.Fsm.Add(new BootstrapState());
             Settings.Fsm.Add(new HomeState());
-            Settings.Fsm.Add(new MoveState());
             Settings.Fsm.Add(new JobState());
             Settings.Fsm.Add(new MagazineState());
+            Settings.Fsm.Add(new MoveState());
         }
     }
 }

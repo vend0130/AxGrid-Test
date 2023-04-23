@@ -1,15 +1,16 @@
-﻿using AxGrid.FSM;
-using UnityEngine;
+﻿using AxGrid;
+using AxGrid.FSM;
+using Result.Task1.Code.States.Base;
 
 namespace Result.Task1.Code.States
 {
     [State(nameof(MagazineState))]
-    public class MagazineState : FSMState
+    public class MagazineState : IdleState
     {
-        [Enter]
-        private void EnterThis()
+        protected override void EnterThis()
         {
-            Debug.Log("enter Magazine");
+            base.EnterThis();
+            Log.Debug("enter magazine state");
         }
     }
 }

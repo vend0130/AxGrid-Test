@@ -1,15 +1,16 @@
-﻿using AxGrid.FSM;
-using UnityEngine;
+﻿using AxGrid;
+using AxGrid.FSM;
+using Result.Task1.Code.States.Base;
 
 namespace Result.Task1.Code.States
 {
     [State(nameof(HomeState))]
-    public class HomeState : FSMState
+    public class HomeState : IdleState
     {
-        [Enter]
-        private void EnterThis()
+        protected override void EnterThis()
         {
-            Debug.Log("enter home");
+            base.EnterThis();
+            Log.Debug("enter home state");
         }
     }
 }
