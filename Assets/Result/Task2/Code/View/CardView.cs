@@ -27,13 +27,14 @@ namespace Result.Task2.Code.View
             _sortingGroup.sortingOrder = callBack ? -1 : order;
 
             Vector2 currentPoint = transform.position;
-            
+
             Path
                 .EasingLinear(TimeMove, 0, 1,
                     (f) => transform.position = Vector2.Lerp(currentPoint, targetPosition, f))
                 .Action(() =>
                 {
                     _sortingGroup.sortingOrder = order;
+
                     if (callBack)
                         Settings.Fsm.Invoke(Keys.CardEndMove);
                 });

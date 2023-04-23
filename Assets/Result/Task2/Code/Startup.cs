@@ -12,16 +12,12 @@ namespace Result.Task2.Code
         [SerializeField] private List<GameObject> _cards;
 
         [OnAwake]
-        private void AwakeThis()
-        {
+        private void AwakeThis() => 
             CreateFsm();
-        }
 
         [OnStart]
-        private void StartThis()
-        {
+        private void StartThis() => 
             Settings.Fsm.Start(nameof(BootstrapState));
-        }
 
         private void CreateFsm()
         {

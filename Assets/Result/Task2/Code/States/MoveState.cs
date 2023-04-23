@@ -27,7 +27,7 @@ namespace Result.Task2.Code.States
                 return;
 
             collection = Model?.Get<List<CardView>>(Keys.SecondCollection);
-            StartMove(collection, _secondDefaultPosition, true, deactivate: true);
+            StartMove(collection, _secondDefaultPosition, true, deactivateCollider: true);
         }
 
         [Bind(Keys.CardEndMove)]
@@ -35,25 +35,30 @@ namespace Result.Task2.Code.States
             Parent.Change(nameof(DormantState));
 
         private void StartMove(List<CardView> collection, Vector2 defaultPosition,
-            bool callBack, bool deactivate = false)
+            bool callBack, bool deactivateCollider = false)
         {
             for (var i = 0; i < collection.Count; i++)
             {
                 CardView card = collection[i];
 
-                if (!card.gameObject.activeSelf)
-                {
-                    card.transform.position = defaultPosition;
-                    card.gameObject.SetActive(true);
-                }
+                ActivateCard(card, defaultPosition);
 
-                if (deactivate)
+                if (deactivateCollider)
                     card.ChangeColliderState();
 
                 bool call = collection.Count - 1 == i && callBack;
                 Vector2 targetPosition = GetTargetPosition(collection.Count, i, defaultPosition);
                 card.MoveTo(targetPosition, i, callBack: call);
             }
+        }
+
+        private void ActivateCard(CardView card, Vector2 defaultPosition)
+        {
+            if (card.gameObject.activeSelf)
+                return;
+
+            card.transform.position = defaultPosition;
+            card.gameObject.SetActive(true);
         }
 
         private Vector2 GetTargetPosition(int count, int index, Vector2 defaultPosition)

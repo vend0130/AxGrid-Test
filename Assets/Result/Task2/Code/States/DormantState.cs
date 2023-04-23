@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using AxGrid.FSM;
 using AxGrid.Model;
 using Result.Task2.Code.View;
-using UnityEngine;
 
 namespace Result.Task2.Code.States
 {
     [State(nameof(DormantState))]
     public class DormantState : FSMState
     {
+        private const int MaxCardInCollection = 10;
+
         [Enter]
-        private void EnterThis() =>
-            Model.Set(Keys.DrawCardButton, true);
+        private void EnterThis()
+        {
+            bool buttonInteractable = Model.Get<List<CardView>>(Keys.FirstCollection).Count < MaxCardInCollection;
+            Model.Set(Keys.DrawCardButton, buttonInteractable);
+        }
 
         [Exit]
         private void ExitThis() =>
@@ -21,6 +25,12 @@ namespace Result.Task2.Code.States
         [Bind("OnBtn")]
         private void Click()
         {
+            if (Model.Get<List<CardView>>(Keys.FirstCollection).Count >= MaxCardInCollection)
+            {
+                Model.Set(Keys.DrawCardButton, false);
+                return;
+            }
+
             Model.Set(Keys.CurrentCollection, Keys.FirstCollection);
             Parent.Change(nameof(FactoryState));
         }
@@ -28,10 +38,15 @@ namespace Result.Task2.Code.States
         [Bind(Keys.ClickOnCard)]
         private void ClickOnCard(string id)
         {
+            List<CardView> secondCollection = Model.Get<List<CardView>>(Keys.SecondCollection);
+
+            if (secondCollection.Count >= MaxCardInCollection)
+                return;
+
             var card = GetCard(id);
 
             Model.Get<List<CardView>>(Keys.FirstCollection).Remove(card);
-            Model.Get<List<CardView>>(Keys.SecondCollection).Add(card);
+            secondCollection.Add(card);
 
             Model.Set(Keys.CurrentCollection, Keys.SecondCollection);
             Parent.Change(nameof(MoveState));
