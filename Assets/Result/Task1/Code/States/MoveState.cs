@@ -5,6 +5,7 @@ using AxGrid.Model;
 using Result.Task1.Code.Data;
 using Result.Task1.Code.States.Base;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Result.Task1.Code.States
 {
@@ -18,11 +19,22 @@ namespace Result.Task1.Code.States
             [TargetPointType.Magazine.ToString()] = nameof(MagazineState),
         };
 
+        private readonly Image _imageWithButtons;
+        private readonly Color _targetColor;
+
         private string _targetPointType;
+
+        public MoveState(Image image, Color color)
+        {
+            _imageWithButtons = image;
+            _targetColor = color;
+        }
 
         [Enter]
         private void EnterThis()
         {
+            _imageWithButtons.color = _targetColor;
+
             _targetPointType = Model.Get<string>(Constants.TargetPointKey);
             Vector2 point = Model.Get<Vector2>(_targetPointType);
             Settings.Invoke(Constants.HeroMoveToBindName, point);

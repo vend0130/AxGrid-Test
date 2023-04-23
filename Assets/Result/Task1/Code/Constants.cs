@@ -12,5 +12,7 @@ namespace Result.Task1.Code
         public const string TargetPointKey = "TargetPoint";
 
         public const string ButtonFormatKey = "Btn{0}Enable";
+
+        public const string BankKey = "Bank";
     }
 }
