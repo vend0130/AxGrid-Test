@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 6663835604135768847}
   - component: {fileID: 3166427809210359834}
   - component: {fileID: 2727718749765284609}
+  - component: {fileID: 3337065145815684236}
   m_Layer: 0
   m_Name: BaseCard
   m_TagString: Untagged
@@ -157,6 +158,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.2621655, y: 3.5297284}
   m_EdgeRadius: 0
+--- !u!114 &3337065145815684236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7869357789002159858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12c5d37b691448a5b81e08d8bb3fdaf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8001995186916154972
 GameObject:
   m_ObjectHideFlags: 0
