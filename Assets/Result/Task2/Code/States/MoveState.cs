@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AxGrid.FSM;
+using AxGrid.Model;
 using Result.Task2.Code.View;
 using UnityEngine;
 
@@ -16,10 +17,16 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
-            Model.Set(Keys.DrawCardButton, false);
-
             List<CardView> collection = Model.Get<List<CardView>>(Keys.FirstCollection);
+            StartMove(collection);
+        }
 
+        [Bind(Keys.CardEndMove)]
+        private void EndMove() =>
+            Parent.Change(nameof(DormantState));
+
+        private void StartMove(List<CardView> collection)
+        {
             for (var i = 0; i < collection.Count; i++)
             {
                 CardView card = collection[i];
@@ -30,11 +37,10 @@ namespace Result.Task2.Code.States
                     card.gameObject.SetActive(true);
                 }
 
+                bool last = collection.Count - 1 == i;
                 Vector2 targetPosition = GetTargetPosition(collection.Count, i);
-                card.MoveTo(targetPosition);
+                card.MoveTo(targetPosition, i, callBack: last);
             }
-
-            Parent.Change(nameof(DormantState));
         }
 
         private Vector2 GetTargetPosition(int count, int index)

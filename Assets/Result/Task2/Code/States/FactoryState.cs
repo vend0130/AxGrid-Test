@@ -17,7 +17,6 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
-            Model.Set(Keys.DrawCardButton, false);
             Create();
             Parent.Change(nameof(MoveState));
         }
@@ -30,6 +29,7 @@ namespace Result.Task2.Code.States
             CardView card = Object.Instantiate(prefab).GetComponent<CardView>();
 
             card.InitId($"Card_{counter}");
+            card.gameObject.SetActive(false);
             Model.Get<List<CardView>>(Keys.FirstCollection).Add(card);
 
             counter++;

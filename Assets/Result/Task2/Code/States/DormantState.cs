@@ -1,5 +1,4 @@
-﻿using AxGrid;
-using AxGrid.FSM;
+﻿using AxGrid.FSM;
 using AxGrid.Model;
 
 namespace Result.Task2.Code.States
@@ -12,7 +11,13 @@ namespace Result.Task2.Code.States
         {
             Model.Set(Keys.DrawCardButton, true);
         }
-        
+
+        [Exit]
+        private void ExitThis()
+        {
+            Model.Set(Keys.DrawCardButton, false);
+        }
+
         [Bind("OnBtn")]
         private void Click(string buttonName)
         {

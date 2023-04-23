@@ -8,5 +8,7 @@
 
         public const string FirstCollection = "FirstCollection";
         public const string SecondCollection = "FirstCollection";
+
+        public const string CardEndMove = "EndMove";
     }
 }
