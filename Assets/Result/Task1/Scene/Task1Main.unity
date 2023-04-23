@@ -382,6 +382,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalModel: 0
   _current: {fileID: 801022591}
+  _moveAnimator: {fileID: 801022593}
+  _spriteRenderer: {fileID: 801022594}
+  _houseEntranceSprite: {fileID: 7043811978007918041, guid: 23748c298f885bf4c89671f6d30f562b,
+    type: 3}
 --- !u!1 &290294148
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +702,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &424038519
 MonoBehaviour:
@@ -2116,7 +2120,7 @@ Transform:
   - {fileID: 1737424559}
   - {fileID: 613093146}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1212516518
 MonoBehaviour:
@@ -4139,7 +4143,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1605285400
 GameObject:
@@ -4694,7 +4698,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6427313761976642779
 PrefabInstance:

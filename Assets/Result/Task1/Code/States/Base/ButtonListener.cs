@@ -2,7 +2,6 @@
 using AxGrid.FSM;
 using AxGrid.Model;
 using Result.Task1.Code.Data;
-using UnityEngine;
 
 namespace Result.Task1.Code.States.Base
 {
@@ -30,14 +29,8 @@ namespace Result.Task1.Code.States.Base
                 Model.Set(buttonEnableKey, button != buttonName);
             }
 
-            ChangeTargetPoint(buttonName);
+            Model.Set(Constants.TargetPointKey, buttonName);
             Parent.Change(nameof(MoveState));
-        }
-
-        private void ChangeTargetPoint(string name)
-        {
-            Vector2 point = Model.Get<Vector2>(name);
-            Model.Set(Constants.TargetPointKey, point);
         }
     }
 }
