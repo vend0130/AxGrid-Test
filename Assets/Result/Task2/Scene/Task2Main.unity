@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 773518752}
   - component: {fileID: 773518755}
   m_Layer: 5
-  m_Name: DrawButton
+  m_Name: DrawCardButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -613,6 +613,7 @@ GameObject:
   - component: {fileID: 1874346462}
   - component: {fileID: 1874346464}
   - component: {fileID: 1874346463}
+  - component: {fileID: 1874346465}
   m_Layer: 5
   m_Name: Counter_Text
   m_TagString: Untagged
@@ -737,6 +738,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1874346461}
   m_CullTransparentMesh: 1
+--- !u!114 &1874346465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874346461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2488ecff4e9ff924780a31c76031c2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalModel: 0
+  fieldNames:
+  - Counter
+  modelChanged: 1
+  format: 'Cards Count: {Counter}'
+  isFormatField: 0
+  applyModelForFromatField: 1
 --- !u!1 &1968666998
 GameObject:
   m_ObjectHideFlags: 0

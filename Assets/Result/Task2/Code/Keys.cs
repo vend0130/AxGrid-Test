@@ -3,5 +3,7 @@
     public static class Keys
     {
         public const string DrawCardButton = "BtnDrawCardButtonEnable";
+        
+        public const string Counter = "Counter";
     }
 }
