@@ -838,7 +838,7 @@ GameObject:
   - component: {fileID: 424038518}
   - component: {fileID: 424038519}
   m_Layer: 0
-  m_Name: Bootstrap
+  m_Name: Startup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -871,7 +871,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcec79cbd65c41d59c65a09c39310a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _character: {fileID: 232221128}
   _imageWithButtons: {fileID: 23154607}
   _homeColor: {r: 1, g: 0.9959649, b: 0.3882353, a: 1}
   _jobColor: {r: 0.53358793, g: 1, b: 0.5254902, a: 1}

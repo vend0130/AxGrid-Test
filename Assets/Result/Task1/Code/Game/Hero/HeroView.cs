@@ -16,7 +16,7 @@ namespace Result.Task1.Code.Game.Hero
         private const float Speed = 3f;
         private const float DelayForEnterInHouse = .13f;
 
-        [Bind(Constants.HeroMoveToBindName)]
+        [Bind(Keys.HeroMoveTo)]
         private void MoveTo(Vector2 targetPoint)
         {
             Path = new CPath();
@@ -27,14 +27,14 @@ namespace Result.Task1.Code.Game.Hero
             Move(targetPoint, direction);
         }
 
-        [Bind(Constants.HeroResetBindName)]
+        [Bind(Keys.HeroReset)]
         private void ResetHero(Vector2 at)
         {
             transform.position = at;
             Stop();
         }
 
-        [Bind(Constants.HeroStopBindName)]
+        [Bind(Keys.HeroStop)]
         private void Stop() =>
             _current.SetActive(false);
 
@@ -62,7 +62,7 @@ namespace Result.Task1.Code.Game.Hero
                     _spriteRenderer.sprite = _houseEntranceSprite;
                 })
                 .Wait(DelayForEnterInHouse)
-                .Action(() => Settings.Fsm.Invoke(Constants.HeroStopBindName));
+                .Action(() => Settings.Fsm.Invoke(Keys.HeroStop));
         }
     }
 }

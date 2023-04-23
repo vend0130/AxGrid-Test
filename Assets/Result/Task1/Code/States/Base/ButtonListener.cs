@@ -24,12 +24,12 @@ namespace Result.Task1.Code.States.Base
         {
             foreach (string button in _buttonsNames)
             {
-                string buttonEnableKey = string.Format(Constants.ButtonFormatKey, button);
+                string buttonEnableKey = string.Format(Keys.ButtonFormat, button);
 
                 Model.Set(buttonEnableKey, button != buttonName);
             }
 
-            Model.Set(Constants.TargetPointKey, buttonName);
+            Model.Set(Keys.TargetPoint, buttonName);
             Parent.Change(nameof(MoveState));
         }
     }

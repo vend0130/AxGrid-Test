@@ -11,12 +11,12 @@ namespace Result.Task1.Code.States
         [Enter]
         private void EnterThis()
         {
-            string defaultKey = Constants.DefaultPointType.ToString();
+            string defaultKey = Keys.DefaultPointType.ToString();
 
             Vector2 point = Model.Get<Vector2>(defaultKey);
-            Settings.Invoke(Constants.HeroResetBindName, point);
+            Settings.Invoke(Keys.HeroReset, point);
 
-            Model.Set(String.Format(Constants.ButtonFormatKey, defaultKey), false);
+            Model.Set(String.Format(Keys.ButtonFormat, defaultKey), false);
             Parent.Change(nameof(HomeState));
         }
     }

@@ -7,9 +7,8 @@ using UnityEngine.UI;
 
 namespace Result.Task1.Code
 {
-    public class Bootstrap : MonoBehaviourExt
+    public class Startup : MonoBehaviourExt
     {
-        [SerializeField] private Transform _character;
         [SerializeField] private Image _imageWithButtons;
         [SerializeField] private Color _homeColor;
         [SerializeField] private Color _jobColor;
@@ -23,7 +22,7 @@ namespace Result.Task1.Code
         [OnStart]
         private void StartThis()
         {
-            Model.Set(Constants.BankKey, 0);
+            Model.Set(Keys.Bank, 0);
             Settings.Fsm.Start(nameof(BootstrapState));
         }
 

@@ -19,7 +19,7 @@ namespace Result.Task1.Code.States.Base
         [Enter]
         protected void EnterThis()
         {
-            Settings.Invoke(Constants.HeroStopBindName);
+            Settings.Invoke(Keys.HeroStop);
             _imageWithButtons.color = _targetColor;
         }
     }

@@ -19,14 +19,14 @@ namespace Result.Task1.Code.States
         [Loop(.4f)]
         public void LoopThis()
         {
-            int bank = Model.GetInt(Constants.BankKey);
+            int bank = Model.GetInt(Keys.Bank);
 
             if (bank <= 0)
                 return;
 
             bank -= Random.Range(_buyPriceRange.x, _buyPriceRange.y + 1);
             bank = bank < 0 ? 0 : bank;
-            Model.Set(Constants.BankKey, bank);
+            Model.Set(Keys.Bank, bank);
         }
     }
 }

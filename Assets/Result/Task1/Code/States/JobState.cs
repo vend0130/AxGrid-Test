@@ -18,9 +18,9 @@ namespace Result.Task1.Code.States
         [OnRefresh(.5f)]
         public void LoopThis()
         {
-            int bank = Model.GetInt(Constants.BankKey);
+            int bank = Model.GetInt(Keys.Bank);
             bank += Salary;
-            Model.Set(Constants.BankKey, bank);
+            Model.Set(Keys.Bank, bank);
         }
     }
 }

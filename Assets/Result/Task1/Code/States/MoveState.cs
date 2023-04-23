@@ -35,12 +35,12 @@ namespace Result.Task1.Code.States
         {
             _imageWithButtons.color = _targetColor;
 
-            _targetPointType = Model.Get<string>(Constants.TargetPointKey);
+            _targetPointType = Model.Get<string>(Keys.TargetPoint);
             Vector2 point = Model.Get<Vector2>(_targetPointType);
-            Settings.Invoke(Constants.HeroMoveToBindName, point);
+            Settings.Invoke(Keys.HeroMoveTo, point);
         }
 
-        [Bind(Constants.HeroStopBindName)]
+        [Bind(Keys.HeroStop)]
         private void IsStopped() =>
             Parent.Change(_states[_targetPointType]);
     }

@@ -11,5 +11,7 @@ namespace Result.Task1.Code.States
         public HomeState(Image image, Color color) : base(image, color)
         {
         }
+        
+        //note: in task not logic for home, but this class need for call home state, so it's empty
     }
 }
