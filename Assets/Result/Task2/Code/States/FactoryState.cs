@@ -16,6 +16,7 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
+            Model.Set(Keys.DrawCardButton, false);
             Log.Debug("enter factory");
         }
     }
