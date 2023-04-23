@@ -1,4 +1,6 @@
-﻿using AxGrid.FSM;
+﻿using System.Collections.Generic;
+using AxGrid.FSM;
+using Result.Task2.Code.View;
 
 namespace Result.Task2.Code.States
 {
@@ -9,7 +11,10 @@ namespace Result.Task2.Code.States
         private void EnterThis()
         {
             Model.Set(Keys.Counter, 0);
-            
+
+            Model.Set(Keys.FirstCollection, new List<CardView>());
+            Model.Set(Keys.SecondCollection, new List<CardView>());
+
             Parent.Change(nameof(DormantState));
         }
     }

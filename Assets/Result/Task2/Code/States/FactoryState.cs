@@ -19,7 +19,7 @@ namespace Result.Task2.Code.States
         {
             Model.Set(Keys.DrawCardButton, false);
             Create();
-            Parent.Change(nameof(DormantState)); //TODO: move state
+            Parent.Change(nameof(MoveState));
         }
 
         private void Create()
