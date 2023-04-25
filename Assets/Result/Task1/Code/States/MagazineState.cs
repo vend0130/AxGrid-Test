@@ -1,7 +1,6 @@
 ﻿using AxGrid.FSM;
 using Result.Task1.Code.States.Base;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Result.Task1.Code.States
 {
@@ -12,8 +11,10 @@ namespace Result.Task1.Code.States
 
         private float _nextTimeBuy;
 
-        public MagazineState(Image image, Color color) : base(image, color)
+        protected override void EnterThis()
         {
+            base.EnterThis();
+            Model.EventManager.Invoke(Keys.EnterState, Model.Get<Color>(nameof(MagazineState)));
         }
 
         [Loop(.4f)]

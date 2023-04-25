@@ -1,17 +1,16 @@
 ﻿using AxGrid.FSM;
 using Result.Task1.Code.States.Base;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Result.Task1.Code.States
 {
     [State(nameof(HomeState))]
     public class HomeState : IdleState
     {
-        public HomeState(Image image, Color color) : base(image, color)
+        protected override void EnterThis()
         {
+            base.EnterThis();
+            Model.EventManager.Invoke(Keys.EnterState, Model.Get<Color>(nameof(HomeState)));
         }
-        
-        //note: in task not logic for home, but this class need for call home state, so it's empty
     }
 }
