@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using AxGrid.FSM;
 using AxGrid.Model;
-using Result.Task2.Code.View;
+using Result.Task2.Code.Data;
+using UnityEngine;
 
 namespace Result.Task2.Code.States
 {
@@ -13,21 +14,17 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
-            bool buttonInteractable = Model.Get<List<CardView>>(Keys.FirstCollection).Count < MaxCardInCollection;
+            Model.EventManager.Invoke("Lol", Vector2.one * 11, 1, false, false);
+            bool buttonInteractable = Model.Get<List<CardData>>(Keys.FirstCollection).Count < MaxCardInCollection;
             Model.Set(Keys.DrawCardButton, buttonInteractable);
         }
 
         [Bind("OnBtn")]
-        private void ClickOnButton()
-        {
-            Parent.Change(nameof(FactoryState));
-        }
+        private void ClickOnButton() =>
+            Parent.Change(nameof(ClickOnButtonState));
 
         [Bind(Keys.ClickOnCard)]
-        private void ClickOnCard(string id)
-        {
-            Model.Set("card", id);//TODO: temp logic
+        private void ClickOnCard() =>
             Parent.Change(nameof(ClickOnCardState));
-        }
     }
 }

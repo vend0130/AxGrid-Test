@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using AxGrid.FSM;
 using Result.Task2.Code.Data;
-using Result.Task2.Code.View;
 
 namespace Result.Task2.Code.States
 {
@@ -12,30 +11,29 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
-            List<CardView> secondCollection = Model.Get<List<CardView>>(Keys.SecondCollection);
+            List<CardData> secondCollection = Model.Get<List<CardData>>(Keys.SecondCollection);
 
             if (secondCollection.Count >= GameData.MaxCardInCollection)
             {
                 Parent.Change(nameof(DormantState));
                 return;
             }
-            
-            Model.Set(Keys.DrawCardButton, false);
 
-            var card = GetCard(Model.GetString("card")); //TODO: temp logic
+            var card = GetCard(Model.GetString(Keys.CardID));
 
-            Model.Get<List<CardView>>(Keys.FirstCollection).Remove(card);
+            Model.Get<List<CardData>>(Keys.FirstCollection).Remove(card);
             secondCollection.Add(card);
 
             Model.Set(Keys.CurrentCollection, Keys.SecondCollection);
+
             Parent.Change(nameof(MoveState));
         }
 
-        private CardView GetCard(string id)
+        private CardData GetCard(string id)
         {
-            foreach (CardView card in Model.Get<List<CardView>>(Keys.FirstCollection))
+            foreach (CardData card in Model.Get<List<CardData>>(Keys.FirstCollection))
             {
-                if (card.Id == id)
+                if (card.ID == id)
                     return card;
             }
 

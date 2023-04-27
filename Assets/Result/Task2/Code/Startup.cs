@@ -1,22 +1,20 @@
-﻿using System.Collections.Generic;
-using AxGrid;
+﻿using AxGrid;
 using AxGrid.Base;
 using AxGrid.FSM;
 using Result.Task2.Code.States;
-using UnityEngine;
 
 namespace Result.Task2.Code
 {
     public class Startup : MonoBehaviourExt
     {
-        [SerializeField] private List<GameObject> _cards;
-
         [OnAwake]
-        private void AwakeThis() => 
+        private void AwakeThis()
+        {
             CreateFsm();
+        }
 
         [OnStart]
-        private void StartThis() => 
+        private void StartThis() =>
             Settings.Fsm.Start(nameof(BootstrapState));
 
         private void CreateFsm()
@@ -25,7 +23,7 @@ namespace Result.Task2.Code
             Settings.Fsm.Add(new BootstrapState());
             Settings.Fsm.Add(new DormantState());
             Settings.Fsm.Add(new ClickOnCardState());
-            Settings.Fsm.Add(new FactoryState(_cards));
+            Settings.Fsm.Add(new ClickOnButtonState());
             Settings.Fsm.Add(new MoveState());
         }
     }
