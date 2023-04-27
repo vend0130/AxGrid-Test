@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 23154606}
   - component: {fileID: 23154608}
   - component: {fileID: 23154607}
+  - component: {fileID: 23154609}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -200,6 +201,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23154605}
   m_CullTransparentMesh: 1
+--- !u!114 &23154609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23154605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38dad1acad4842098b264a96d0cc2a9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalModel: 0
+  _fieldName: Image
 --- !u!1 &144893907
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,7 +886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcec79cbd65c41d59c65a09c39310a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imageWithButtons: {fileID: 23154607}
   _homeColor: {r: 1, g: 0.9959649, b: 0.3882353, a: 1}
   _jobColor: {r: 0.53358793, g: 1, b: 0.5254902, a: 1}
   _magazineColor: {r: 1, g: 0.5254902, b: 0.5254902, a: 1}
@@ -928,6 +942,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f6a8741eca447189d7c5390b9f020d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  _audioSource: {fileID: 0}
   _panel: {fileID: 23154607}
 --- !u!1 &613093145
 GameObject:
