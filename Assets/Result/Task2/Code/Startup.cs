@@ -24,6 +24,7 @@ namespace Result.Task2.Code
             Settings.Fsm = new FSM();
             Settings.Fsm.Add(new BootstrapState());
             Settings.Fsm.Add(new DormantState());
+            Settings.Fsm.Add(new ClickOnCardState());
             Settings.Fsm.Add(new FactoryState(_cards));
             Settings.Fsm.Add(new MoveState());
         }
