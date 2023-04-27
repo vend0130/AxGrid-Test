@@ -24,7 +24,7 @@ namespace Result.Task1.Code.States
         [Enter]
         private void EnterThis()
         {
-            Model.EventManager.Invoke(Keys.EnterState, Model.Get<Color>(nameof(MoveState)));
+            Model.Set(Keys.Image, Model.Get<Color>(nameof(MoveState)));
 
             _targetPointType = Model.Get<string>(Keys.TargetPoint);
             Vector2 point = Model.Get<Vector2>(_targetPointType);

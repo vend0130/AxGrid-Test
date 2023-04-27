@@ -14,6 +14,6 @@ namespace Result.Task1.Code
         public const string ButtonFormat = "Btn{0}Enable";
 
         public const string Bank = "Bank";
-        public const string EnterState = "EnterState";
+        public const string Image = "Image";
     }
 }

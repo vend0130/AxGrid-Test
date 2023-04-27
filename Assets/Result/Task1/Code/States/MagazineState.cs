@@ -14,7 +14,7 @@ namespace Result.Task1.Code.States
         protected override void EnterThis()
         {
             base.EnterThis();
-            Model.EventManager.Invoke(Keys.EnterState, Model.Get<Color>(nameof(MagazineState)));
+            Model.Set(Keys.Image, Model.Get<Color>(nameof(MagazineState)));
         }
 
         [Loop(.4f)]

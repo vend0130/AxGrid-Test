@@ -13,7 +13,7 @@ namespace Result.Task1.Code.States
         protected override void EnterThis()
         {
             base.EnterThis();
-            Model.EventManager.Invoke(Keys.EnterState, Model.Get<Color>(nameof(JobState)));
+            Model.Set(Keys.Image, Model.Get<Color>(nameof(JobState)));
         }
 
         [OnRefresh(.5f)]
