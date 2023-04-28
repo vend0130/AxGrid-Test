@@ -22,8 +22,8 @@ namespace Result.MyTools.Code.Tools
         [Tooltip("На сколько процент будет увеличен объект при драге")] [Range(0, 100), SerializeField]
         private int _dragScale = 2;
 
-        [Tooltip("Время за которое будет меняться скейл")] [SerializeField]
-        private float _timeScale = .15f;
+        [Tooltip("Время за которое будет проигрываться анимация скейла и движения")] [SerializeField]
+        private float _timePath = .15f;
 
         private const string NotDragState = "NotDrag";
         private const string BeginDragState = "BeginDrag";
@@ -38,6 +38,9 @@ namespace Result.MyTools.Code.Tools
         private Vector2 _offset;
         private Vector3 _defaultScale;
 
+        private CPath _scalePath;
+        private CPath _movePath;
+
         [OnAwake]
         private void AwakeThis()
         {
@@ -51,7 +54,7 @@ namespace Result.MyTools.Code.Tools
             {
                 Log.Error($"Error get Component:{e.Message}");
             }
-            
+
             _fieldName = string.IsNullOrEmpty(_fieldName) ? name : _fieldName;
             _scaleObject = _scaleObject ? _scaleObject : transform;
             _defaultScale = _scaleObject.localScale;
@@ -74,6 +77,8 @@ namespace Result.MyTools.Code.Tools
         {
             if (_pointerId != null)
                 return;
+
+            _movePath?.StopPath();
 
             _sorting.sortingOrder = _dragOrder;
             _pointerId = eventData.pointerId;
@@ -110,7 +115,7 @@ namespace Result.MyTools.Code.Tools
 
         private void ChangeState(bool value)
         {
-            _collider.enabled = value; 
+            _collider.enabled = value;
             EndDrag();
         }
 
@@ -127,19 +132,21 @@ namespace Result.MyTools.Code.Tools
 
         private void FailDrop()
         {
-            transform.position = _previousPoint;//TODO: changed logic when will Alexander reply 
-            // Vector2 current = transform.position;
-            // Path.EasingLinear(1f, 0, 1, (f) =>
-            //     transform.position = Vector2.Lerp(current, _previousPoint, f));
+            _movePath?.StopPath();
+            _movePath = CreateNewPath(); 
+            
+            Vector2 current = transform.position;
+            _movePath.EasingLinear(_timePath, 0, 1, (f) =>
+                transform.position = Vector2.Lerp(current, _previousPoint, f));
         }
 
         private void PlayEffect(Vector2 target)
         {
-            Path.StopPath();
-            Path = new CPath();
-
+            _scalePath?.StopPath();
+            _scalePath = CreateNewPath();
+            
             Vector2 current = _scaleObject.localScale;
-            Path.EasingLinear(_timeScale, 0, 1, (f) =>
+            _scalePath.EasingLinear(_timePath, 0, 1, (f) =>
                 _scaleObject.localScale = Vector2.Lerp(current, target, f));
         }
 
