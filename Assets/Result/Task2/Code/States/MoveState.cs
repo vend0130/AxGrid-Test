@@ -7,11 +7,8 @@ namespace Result.Task2.Code.States
     public class MoveState : FSMState
     {
         [Enter]
-        private void EnterThis()
-        {
-            Model.EventManager.Invoke(Keys.CollectionChanged);
+        private void EnterThis() =>
             Model.Set(Keys.DrawCardButton, false);
-        }
 
         [Bind(Keys.CardEndMove)]
         private void EndMove() =>

@@ -9,14 +9,49 @@ namespace Result.Task2.Code.Game
     {
         [SerializeField] private List<CardView> _cards;
 
-        public CardView Create(string id)
+        private readonly List<CardView> _cardsOnScene = new List<CardView>();
+
+        public CardView GetCard(string id, string collectionName, Transform parent)
+        {
+            CardView card;
+            if (TryGetCardOnScene(id, out card))
+            {
+                card.ChangeCollection(collectionName);
+                card.transform.SetParent(parent);
+                return card;
+            }
+
+            card = Create(id, parent);
+            card.ChangeCollection(collectionName);
+
+            return card;
+        }
+
+        private CardView Create(string id, Transform parent)
         {
             CardView card = Instantiate(_cards.GetRandomElement(),
-                Model.Get<Vector2>(Keys.FirstDefaultPosition), Quaternion.identity, transform);
+                parent.position, Quaternion.identity, parent);
 
             card.Init(id);
 
+            _cardsOnScene.Add(card);
+
             return card;
+        }
+
+        private bool TryGetCardOnScene(string id, out CardView card)
+        {
+            foreach (CardView cardOnScene in _cardsOnScene)
+            {
+                if (cardOnScene.Id == id)
+                {
+                    card = cardOnScene;
+                    return true;
+                }
+            }
+
+            card = null;
+            return false;
         }
     }
 }

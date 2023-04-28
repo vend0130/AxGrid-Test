@@ -2,6 +2,6 @@
 {
     public static class GameData
     {
-        public const int MaxCardInCollection = 10;
+        public const int MaxCardInCollection = 12;
     }
 }

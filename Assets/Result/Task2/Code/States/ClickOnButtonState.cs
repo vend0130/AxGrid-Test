@@ -16,10 +16,9 @@ namespace Result.Task2.Code.States
                 return;
             }
 
-            Model.Set(Keys.CurrentCollection, Keys.FirstCollection);
-
             AddData();
 
+            Model.EventManager.Invoke($"{Keys.FirstCollection}Changed");
             Parent.Change(nameof(MoveState));
         }
 
