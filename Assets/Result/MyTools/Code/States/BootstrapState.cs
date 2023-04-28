@@ -8,7 +8,7 @@ namespace Result.MyTools.Code.States
         [Enter]
         private void EnterThis()
         {
-            ChangeFrogData(isDrag: false, name: "froooog");
+            ChangeFrogData(isDrag: false, name: string.Empty);
 
             Parent.Change(nameof(InputChangeState));
         }

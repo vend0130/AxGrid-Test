@@ -523,7 +523,6 @@ MonoBehaviour:
   _fieldName: 
   _defaultOrder: 1
   _dragOrder: 2
-  _scaleObject: {fileID: 0}
   _dragScale: 25
   _timePath: 0.15
 --- !u!4 &406205494
@@ -5268,7 +5267,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalModel: 0
   _toggleName: DragFrog
-  _enableField: 
   _defaultEnable: 1
 --- !u!1 &626732512
 GameObject:
@@ -6525,7 +6523,6 @@ MonoBehaviour:
   _fieldName: 
   _defaultOrder: 1
   _dragOrder: 2
-  _scaleObject: {fileID: 0}
   _dragScale: 25
   _timePath: 0.15
 --- !u!210 &1509909193
@@ -7302,11 +7299,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2062152046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bc03c3a577e4e4d97a3b6b094b945da, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ee90bb896084353a57e8ee9b1cd4ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   globalModel: 0
-  _fieldName: FrogNameField
-  _enableField: 
-  _defaultEnable: 1
-  _printEvent: 0
+  fieldName: FrogNameField
+  printEvent: 0
+  defaultEnable: 1
