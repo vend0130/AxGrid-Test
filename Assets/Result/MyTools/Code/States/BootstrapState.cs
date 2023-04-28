@@ -8,10 +8,18 @@ namespace Result.MyTools.Code.States
         [Enter]
         private void EnterThis()
         {
-            Model.Set(Keys.ToggleDragFrogIsOn, false);
-            Model.Set(Keys.FrogDragState, false);
+            ChangeFrogData(isDrag: false, name: "froooog");
 
             Parent.Change(nameof(InputChangeState));
+        }
+
+        private void ChangeFrogData(bool isDrag, string name)
+        {
+            Model.Set(Keys.ToggleDragFrogIsOn, isDrag);
+            Model.Set(Keys.FrogDragState, isDrag);
+            
+            Model.Set(Keys.FrogNameInputField, name);
+            Model.Set(Keys.FrogNameText, name);
         }
     }
 }

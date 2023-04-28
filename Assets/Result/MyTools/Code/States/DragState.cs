@@ -1,6 +1,5 @@
 ﻿using AxGrid.FSM;
 using AxGrid.Model;
-using UnityEngine;
 
 namespace Result.MyTools.Code.States
 {
@@ -15,7 +14,7 @@ namespace Result.MyTools.Code.States
         [Bind("EndDrag")]
         private void EndDrag(string fieldName)
         {
-            if (Random.value > .5f)
+            if (fieldName == "PinkFin")
                 Model.EventManager.Invoke($"On{fieldName}FailDrop");
 
             Parent.Change(nameof(InputChangeState));

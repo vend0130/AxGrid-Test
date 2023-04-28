@@ -10,12 +10,14 @@ namespace Result.MyTools.Code.States
         private void EnterThis()
         {
             Model.Set(Keys.ToggleDragFrogEnable, true);
+            Model.Set(Keys.InptFldFrogNameEnable, !Model.GetBool(Keys.ToggleDragFrogIsOn));
         }
 
         [Exit]
         private void ExitThis()
         {
             Model.Set(Keys.ToggleDragFrogEnable, false);
+            Model.Set(Keys.InptFldFrogNameEnable, false);
         }
 
         [Bind("BeginDrag")]
@@ -29,7 +31,19 @@ namespace Result.MyTools.Code.States
         private void ToggleClick(string name, bool value)
         {
             if (name == Keys.ToggleDragFrog)
+            {
                 Model.Set(Keys.FrogDragState, value);
+                Model.Set(Keys.InptFldFrogNameEnable, !value);
+            }
+        }
+        
+        [Bind("OnInputField")]
+        private void InputField(string name)
+        {
+            if (name == "FrogNameField")
+            {
+                Model.Set(Keys.FrogNameText, Model.GetString(Keys.FrogNameInputField));
+            }
         }
     }
 }

@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 51536823}
   - component: {fileID: 51536825}
   - component: {fileID: 51536824}
+  - component: {fileID: 51536826}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -258,6 +259,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51536822}
   m_CullTransparentMesh: 1
+--- !u!114 &51536826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51536822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2488ecff4e9ff924780a31c76031c2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalModel: 0
+  fieldNames:
+  - FrogNameText
+  modelChanged: 0
+  format: '{FrogNameText}'
+  isFormatField: 0
+  applyModelForFromatField: 0
 --- !u!1 &52216720
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +525,7 @@ MonoBehaviour:
   _dragOrder: 2
   _scaleObject: {fileID: 0}
   _dragScale: 25
-  _timeScale: 0.15
+  _timePath: 0.15
 --- !u!4 &406205494
 Transform:
   m_ObjectHideFlags: 0
@@ -6507,7 +6527,7 @@ MonoBehaviour:
   _dragOrder: 2
   _scaleObject: {fileID: 0}
   _dragScale: 25
-  _timeScale: 0.15
+  _timePath: 0.15
 --- !u!210 &1509909193
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -6785,7 +6805,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: Enter frog name...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7108,8 +7128,9 @@ GameObject:
   - component: {fileID: 2062152050}
   - component: {fileID: 2062152049}
   - component: {fileID: 2062152048}
+  - component: {fileID: 2062152051}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: FrogName_InputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7161,7 +7182,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 0.1764706}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -7272,3 +7293,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2062152046}
   m_CullTransparentMesh: 1
+--- !u!114 &2062152051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062152046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc03c3a577e4e4d97a3b6b094b945da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalModel: 0
+  _fieldName: FrogNameField
+  _enableField: 
+  _defaultEnable: 1
+  _printEvent: 0

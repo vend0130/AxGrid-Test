@@ -1,6 +1,6 @@
-﻿using System;
-using AxGrid;
+﻿using AxGrid;
 using AxGrid.Base;
+using AxGrid.Model;
 using AxGrid.Path;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,20 +10,13 @@ namespace Result.MyTools.Code.Tools
 {
     [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(SortingGroup))]
-    public class DragAndDrop2DBind : Binder, IPointerDownHandler, IPointerUpHandler, IDragHandler
+    public class DragAndDrop2DBind : MonoBehaviourExtBind, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         [SerializeField] private string _fieldName;
-
         [SerializeField] private int _defaultOrder = 1;
         [SerializeField] private int _dragOrder = 2;
-
-        [Header("Scale")] [SerializeField] private Transform _scaleObject;
-
-        [Tooltip("На сколько процент будет увеличен объект при драге")] [Range(0, 100), SerializeField]
-        private int _dragScale = 2;
-
-        [Tooltip("Время за которое будет проигрываться анимация скейла и движения")] [SerializeField]
-        private float _timePath = .15f;
+        [Range(0, 100), SerializeField] private int _dragScale = 2;
+        [SerializeField] private float _timePath = .15f;
 
         private const string NotDragState = "NotDrag";
         private const string BeginDragState = "BeginDrag";
@@ -44,33 +37,16 @@ namespace Result.MyTools.Code.Tools
         [OnAwake]
         private void AwakeThis()
         {
-            try
-            {
-                _collider = GetComponent<Collider2D>();
-                _sorting = GetComponent<SortingGroup>();
-                _camera = Camera.main;
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Error get Component:{e.Message}");
-            }
+            _collider = GetComponent<Collider2D>();
+            _sorting = GetComponent<SortingGroup>();
+            _camera = Camera.main;
 
             _fieldName = string.IsNullOrEmpty(_fieldName) ? name : _fieldName;
-            _scaleObject = _scaleObject ? _scaleObject : transform;
-            _defaultScale = _scaleObject.localScale;
+            _defaultScale = transform.localScale;
             _sorting.sortingOrder = _defaultOrder;
 
-            Model.EventManager.AddParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
-            Model.EventManager.AddAction($"On{_fieldName}FailDrop", FailDrop);
 
             CallEvents(NotDragState);
-        }
-
-        [OnDestroy]
-        private void DestroyThis()
-        {
-            Model.EventManager.RemoveParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
-            Model.EventManager.RemoveAction($"On{_fieldName}FailDrop", FailDrop);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -84,8 +60,8 @@ namespace Result.MyTools.Code.Tools
             _pointerId = eventData.pointerId;
             _offset = (Vector2)transform.position - GetWorldPosition(eventData);
             _previousPoint = transform.position;
-            PlayEffect(_defaultScale + Vector3.one * ((float)_dragScale / 100));
 
+            PlayEffect(_defaultScale + Vector3.one * ((float)_dragScale / 100));
             CallEvents(BeginDragState);
         }
 
@@ -113,10 +89,22 @@ namespace Result.MyTools.Code.Tools
                 EndDrag();
         }
 
+        [Bind("On{_fieldName}DragStateChanged")]
         private void ChangeState(bool value)
         {
             _collider.enabled = value;
             EndDrag();
+        }
+
+        [Bind("On{_fieldName}FailDrop")]
+        private void FailDrop()
+        {
+            _movePath?.StopPath();
+            _movePath = CreateNewPath();
+
+            Vector2 current = transform.position;
+            _movePath.EasingLinear(_timePath, 0, 1, (f) =>
+                transform.position = Vector2.Lerp(current, _previousPoint, f));
         }
 
         private void EndDrag()
@@ -130,24 +118,15 @@ namespace Result.MyTools.Code.Tools
         private Vector2 GetWorldPosition(PointerEventData eventData) =>
             _camera.ScreenToWorldPoint(eventData.position);
 
-        private void FailDrop()
-        {
-            _movePath?.StopPath();
-            _movePath = CreateNewPath(); 
-            
-            Vector2 current = transform.position;
-            _movePath.EasingLinear(_timePath, 0, 1, (f) =>
-                transform.position = Vector2.Lerp(current, _previousPoint, f));
-        }
 
         private void PlayEffect(Vector2 target)
         {
             _scalePath?.StopPath();
             _scalePath = CreateNewPath();
-            
-            Vector2 current = _scaleObject.localScale;
+
+            Vector2 current = transform.localScale;
             _scalePath.EasingLinear(_timePath, 0, 1, (f) =>
-                _scaleObject.localScale = Vector2.Lerp(current, target, f));
+                transform.localScale = Vector2.Lerp(current, target, f));
         }
 
         private void CallEvents(string eventName)
