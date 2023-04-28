@@ -13,9 +13,11 @@ namespace Result.Task2.Code.Game
     public class CardView : MonoBehaviourExt, IPointerClickHandler
     {
         public string Id { get; private set; }
+        public event Action<CardView> CgangedCollectionHandler;
 
         private const float TimeMove = .2f;
 
+        private string _currentCollection;
         private SortingGroup _sortingGroup;
         private Collider2D _collider;
 
@@ -23,6 +25,12 @@ namespace Result.Task2.Code.Game
         {
             Id = id;
             gameObject.SetActive(false);
+        }
+
+        public void ChangeCollection(string collection)
+        {
+            _currentCollection = collection;
+            CgangedCollectionHandler?.Invoke(this);
         }
 
         [OnAwake]
