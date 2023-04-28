@@ -1,4 +1,6 @@
-﻿using AxGrid.FSM;
+﻿using AxGrid;
+using AxGrid.FSM;
+using AxGrid.Model;
 
 namespace Result.MyTools.Code.States
 {
@@ -8,7 +10,14 @@ namespace Result.MyTools.Code.States
         [Enter]
         private void EnterThis()
         {
-            
+            Log.Debug("enter input");
+            Model.Set($"FrogState", true);
+        }
+
+        [Bind("BeginDrag")]
+        private void BeginDrag(string fieldName)
+        {
+            Parent.Change(nameof(DragState));
         }
     }
 }
