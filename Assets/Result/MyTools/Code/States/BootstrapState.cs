@@ -8,6 +8,9 @@ namespace Result.MyTools.Code.States
         [Enter]
         private void EnterThis()
         {
+            Model.Set(Keys.ToggleDragFrogIsOn, false);
+            Model.Set(Keys.FrogDragState, false);
+
             Parent.Change(nameof(InputChangeState));
         }
     }

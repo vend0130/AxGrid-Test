@@ -4,13 +4,18 @@ using AxGrid.Base;
 using AxGrid.Path;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 namespace Result.MyTools.Code.Tools
 {
     [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(SortingGroup))]
     public class DragAndDrop2DBind : Binder, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         [SerializeField] private string _fieldName;
+
+        [SerializeField] private int _defaultOrder = 1;
+        [SerializeField] private int _dragOrder = 2;
 
         [Header("Scale")] [SerializeField] private Transform _scaleObject;
 
@@ -28,6 +33,7 @@ namespace Result.MyTools.Code.Tools
         private int? _pointerId;
         private Camera _camera;
         private Collider2D _collider;
+        private SortingGroup _sorting;
         private Vector2 _offset;
         private Vector3 _defaultScale;
 
@@ -37,6 +43,8 @@ namespace Result.MyTools.Code.Tools
             try
             {
                 _collider = GetComponent<Collider2D>();
+                _sorting = GetComponent<SortingGroup>();
+                _camera = Camera.main;
             }
             catch (Exception e)
             {
@@ -45,11 +53,10 @@ namespace Result.MyTools.Code.Tools
             
             _fieldName = string.IsNullOrEmpty(_fieldName) ? name : _fieldName;
             _scaleObject = _scaleObject ? _scaleObject : transform;
-
-            _camera = Camera.main;
             _defaultScale = _scaleObject.localScale;
+            _sorting.sortingOrder = _defaultOrder;
 
-            Model.EventManager.AddParameterAction<bool>($"On{_fieldName}StateChanged", ChangeState);
+            Model.EventManager.AddParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
 
             CallEvents(NotDragState);
         }
@@ -57,7 +64,7 @@ namespace Result.MyTools.Code.Tools
         [OnDestroy]
         private void DestroyThis()
         {
-            Model.EventManager.RemoveParameterAction<bool>($"On{_fieldName}StateChanged", ChangeState);
+            Model.EventManager.RemoveParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -65,6 +72,7 @@ namespace Result.MyTools.Code.Tools
             if (_pointerId != null)
                 return;
 
+            _sorting.sortingOrder = _dragOrder;
             _pointerId = eventData.pointerId;
             _offset = (Vector2)transform.position - GetWorldPosition(eventData);
             PlayEffect(_defaultScale + Vector3.one * ((float)_dragScale / 100));
@@ -74,7 +82,7 @@ namespace Result.MyTools.Code.Tools
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (_pointerId == null)
+            if (_pointerId == null || _pointerId != eventData.pointerId)
                 return;
 
             transform.position = GetWorldPosition(eventData) + _offset;
@@ -84,7 +92,7 @@ namespace Result.MyTools.Code.Tools
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (_pointerId == null)
+            if (_pointerId == null || _pointerId != eventData.pointerId)
                 return;
 
             EndDrag();
@@ -105,6 +113,7 @@ namespace Result.MyTools.Code.Tools
         private void EndDrag()
         {
             _pointerId = null;
+            _sorting.sortingOrder = _defaultOrder;
             PlayEffect(_defaultScale);
             CallEvents(EndDragState);
         }
