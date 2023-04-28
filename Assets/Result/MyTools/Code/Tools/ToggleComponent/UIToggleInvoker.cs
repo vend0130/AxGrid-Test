@@ -33,7 +33,6 @@ namespace Result.MyTools.Code.Tools.ToggleComponent
 
         private void OnItemValue()
         {
-            Log.Debug(Model.GetBool($"Toggle{toggleName}IsOn").ToString());
             if (toggle.isOn != Model.GetBool($"Toggle{toggleName}IsOn"))
                 toggle.isOn = Model.GetBool($"Toggle{toggleName}IsOn");
         }

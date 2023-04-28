@@ -1,7 +1,7 @@
 ﻿using AxGrid.Base;
 using UnityEngine;
 
-namespace Result.MyTools.Code.Tools.InputField
+namespace Result.MyTools.Code.Tools.InputFieldComponent
 {
     public class UIInputFieldInteractable : UIInputFieldInvoker
     {

@@ -3,7 +3,7 @@ using AxGrid.Base;
 using TMPro;
 using UnityEngine;
 
-namespace Result.MyTools.Code.Tools.InputField
+namespace Result.MyTools.Code.Tools.InputFieldComponent
 {
     [RequireComponent(typeof(TMP_InputField))]
     public class UIInputFieldInvoker : MonoBehaviourExtBind
