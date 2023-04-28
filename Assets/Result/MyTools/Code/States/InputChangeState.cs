@@ -21,6 +21,7 @@ namespace Result.MyTools.Code.States
         [Bind("BeginDrag")]
         private void BeginDrag(string fieldName)
         {
+            Model.Set(Keys.CurrentDragObject, fieldName);
             Parent.Change(nameof(DragState));
         }
 

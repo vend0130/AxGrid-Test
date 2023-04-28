@@ -23,7 +23,7 @@ namespace Result.MyTools.Code.Tools
         private int _dragScale = 2;
 
         [Tooltip("Время за которое будет меняться скейл")] [SerializeField]
-        private float _duration = .15f;
+        private float _timeScale = .15f;
 
         private const string NotDragState = "NotDrag";
         private const string BeginDragState = "BeginDrag";
@@ -34,6 +34,7 @@ namespace Result.MyTools.Code.Tools
         private Camera _camera;
         private Collider2D _collider;
         private SortingGroup _sorting;
+        private Vector2 _previousPoint;
         private Vector2 _offset;
         private Vector3 _defaultScale;
 
@@ -57,6 +58,7 @@ namespace Result.MyTools.Code.Tools
             _sorting.sortingOrder = _defaultOrder;
 
             Model.EventManager.AddParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
+            Model.EventManager.AddAction($"On{_fieldName}FailDrop", FailDrop);
 
             CallEvents(NotDragState);
         }
@@ -65,6 +67,7 @@ namespace Result.MyTools.Code.Tools
         private void DestroyThis()
         {
             Model.EventManager.RemoveParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
+            Model.EventManager.RemoveAction($"On{_fieldName}FailDrop", FailDrop);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -75,6 +78,7 @@ namespace Result.MyTools.Code.Tools
             _sorting.sortingOrder = _dragOrder;
             _pointerId = eventData.pointerId;
             _offset = (Vector2)transform.position - GetWorldPosition(eventData);
+            _previousPoint = transform.position;
             PlayEffect(_defaultScale + Vector3.one * ((float)_dragScale / 100));
 
             CallEvents(BeginDragState);
@@ -121,13 +125,21 @@ namespace Result.MyTools.Code.Tools
         private Vector2 GetWorldPosition(PointerEventData eventData) =>
             _camera.ScreenToWorldPoint(eventData.position);
 
+        private void FailDrop()
+        {
+            transform.position = _previousPoint;//TODO: changed logic when will Alexander reply 
+            // Vector2 current = transform.position;
+            // Path.EasingLinear(1f, 0, 1, (f) =>
+            //     transform.position = Vector2.Lerp(current, _previousPoint, f));
+        }
+
         private void PlayEffect(Vector2 target)
         {
             Path.StopPath();
             Path = new CPath();
 
             Vector2 current = _scaleObject.localScale;
-            Path.EasingLinear(_duration, 0, 1, (f) =>
+            Path.EasingLinear(_timeScale, 0, 1, (f) =>
                 _scaleObject.localScale = Vector2.Lerp(current, target, f));
         }
 

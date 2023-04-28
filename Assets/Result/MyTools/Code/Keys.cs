@@ -2,6 +2,7 @@
 {
     public static class Keys
     {
+        public const string CurrentDragObject = "CurrentDragObject";
         public const string FrogDragState = "FrogDragState";
         
         public const string ToggleDragFrog = "DragFrog";
