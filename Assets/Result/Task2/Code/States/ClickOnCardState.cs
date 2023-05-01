@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AxGrid;
+using System.Linq;
 using AxGrid.FSM;
 using Result.Task2.Code.Data;
 using Result.Task2.Code.Extensions;
@@ -12,66 +12,62 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
-            if (!NextCollection(out string nameCollection, out List<CardData> collection))
+            string currentCardId = Model.GetString(Keys.ClickOnCardID);
+            CardCollectionType clickCollection = Model.Get<CardCollectionType>(Keys.ClickOnCardCollection);
+
+            if (!TryGetCollection(clickCollection, out CollectionData targetCollection) ||
+                !TryGetCard(clickCollection, currentCardId, out CardData card))
             {
                 Parent.Change(nameof(DormantState));
                 return;
             }
 
-            string id = Model.GetString(Keys.CardID);
-            if (!TryGetCard(id, out CardData card))
-            {
-                Log.Error($"not fount card with id: {id} in {Keys.FirstCollection}");
-                Parent.Change(nameof(DormantState));
-                return;
-            }
+            RemoveCard(clickCollection, currentCardId);
+            SwitchCollections(clickCollection, targetCollection, card);
 
-            Model.Get<List<CardData>>(Keys.FirstCollection).Remove(card);
-            collection.Add(card);
-
-            Model.EventManager.Invoke($"{nameCollection}Changed");
             Parent.Change(nameof(MoveState));
         }
 
-        private bool NextCollection(out string name, out List<CardData> collection)
+        private bool TryGetCollection(CardCollectionType clickCollection, out CollectionData collection)
         {
-            List<string> names = Model.Get<List<string>>(Keys.CollectionsNames);
-            List<(string, List<CardData>)> pair = new List<(string, List<CardData>)>();
+            List<CardCollectionType> types = Model
+                .Get<List<CardCollectionType>>(Keys.CollectionsNames)
+                .Where((type) => IsCorrectType(clickCollection, type))
+                .ToList();
 
-            foreach (string currentName in names)
+            if (types.Count == 0)
             {
-                if (currentName == Keys.FirstCollection)
-                    continue;
-
-                var currentCollection = Model.Get<List<CardData>>(currentName);
-                if (currentCollection.Count < GameData.MaxCardInCollection)
-                    pair.Add((currentName, currentCollection));
-            }
-
-            if (pair.Count == 0)
-            {
-                name = string.Empty;
                 collection = null;
                 return false;
             }
 
-            (name, collection) = pair.GetRandomElement();
+            collection = Model.Get<CollectionData>(types.GetRandomElement().ToString());
             return true;
         }
 
-        private bool TryGetCard(string id, out CardData card)
-        {
-            foreach (CardData currentCard in Model.Get<List<CardData>>(Keys.FirstCollection))
-            {
-                if (currentCard.ID == id)
-                {
-                    card = currentCard;
-                    return true;
-                }
-            }
+        private bool IsCorrectType(CardCollectionType clickCollection, CardCollectionType type) =>
+            type != clickCollection &&
+            Model.Get<CollectionData>(type.ToString()).CardDatas.Count < GameData.MaxCardInCollection;
 
-            card = null;
-            return false;
+        private bool TryGetCard(CardCollectionType clickCollection, string cardId, out CardData card)
+        {
+            card = Model
+                .Get<CollectionData>(clickCollection.ToString())
+                .CardDatas.Find(currentCard => currentCard.ID == cardId);
+
+            return card != null;
+        }
+
+        private void RemoveCard(CardCollectionType clickCollection, string cardId) =>
+            Model.EventManager.Invoke($"{clickCollection}RemoveCard", cardId);
+
+        private void SwitchCollections(CardCollectionType clickCollection,
+            CollectionData targetCollection, CardData card)
+        {
+            Model.Get<CollectionData>(clickCollection.ToString()).CardDatas.Remove(card);
+
+            targetCollection.CardDatas.Add(card);
+            Model.EventManager.Invoke($"{targetCollection.Type}Changed");
         }
     }
 }

@@ -13,11 +13,10 @@ namespace Result.Task2.Code.Game
     public class CardView : MonoBehaviourExt, IPointerClickHandler
     {
         public string Id { get; private set; }
-        public event Action<CardView> CgangedCollectionHandler;
+        public event Action<CardView> OnClickHandler;
 
         private const float TimeMove = .2f;
 
-        private string _currentCollection;
         private SortingGroup _sortingGroup;
         private Collider2D _collider;
 
@@ -27,31 +26,18 @@ namespace Result.Task2.Code.Game
             gameObject.SetActive(false);
         }
 
-        public void ChangeCollection(string collection)
-        {
-            _currentCollection = collection;
-            CgangedCollectionHandler?.Invoke(this);
-        }
-
         [OnAwake]
         private void AwakeThis()
         {
-            try
-            {
-                _sortingGroup = GetComponent<SortingGroup>();
-                _collider = GetComponent<Collider2D>();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Error get Component:{e.Message}");
-            }
+            _sortingGroup = GetComponent<SortingGroup>();
+            _collider = GetComponent<Collider2D>();
         }
 
         public void MoveTo(Vector2 targetPoint, int order, bool callBack, bool colliderEnable)
         {
             ResetPath();
             ActivateObject();
-            ChangeColliderState(colliderEnable);
+            ChangeColliderState(false);
             ChangeSortOrder(callBack ? -1 : order);
 
             Vector2 currentPoint = transform.position;
@@ -62,14 +48,12 @@ namespace Result.Task2.Code.Game
                 .Action(() =>
                 {
                     ChangeSortOrder(order);
+                    ChangeColliderState(colliderEnable);
 
                     if (callBack)
                         Settings.Fsm.Invoke(Keys.CardEndMove);
                 });
         }
-
-        private void ActivateObject() =>
-            gameObject.SetActive(true);
 
         private void ResetPath()
         {
@@ -77,16 +61,16 @@ namespace Result.Task2.Code.Game
             Path = new CPath();
         }
 
+        private void ActivateObject() =>
+            gameObject.SetActive(true);
+
         private void ChangeColliderState(bool value) =>
             _collider.enabled = value;
 
         private void ChangeSortOrder(int value) =>
             _sortingGroup.sortingOrder = value;
 
-        public void OnPointerClick(PointerEventData _)
-        {
-            Model.Set(Keys.CardID, Id);
-            Settings.Fsm.Invoke(Keys.ClickOnCard);
-        }
+        public void OnPointerClick(PointerEventData _) =>
+            OnClickHandler?.Invoke(this);
     }
 }
