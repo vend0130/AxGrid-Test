@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AxGrid;
 using AxGrid.Base;
 using Result.Task2.Code.Data;
@@ -11,9 +10,9 @@ namespace Result.Task2.Code.Game
     [RequireComponent(typeof(CardsFactory))]
     public class CollectionCards : MonoBehaviourExt
     {
-        [SerializeField] private string _nameCollection;
+        [SerializeField] private CardCollectionType _collectionType;
         [SerializeField] private Transform _parent;
-        [SerializeField] private bool _colliderEnable;
+        [SerializeField] private bool _colliderEnableBeforeCardMove = true;
 
         private const float DistanceBetweenCards = 1.35f;
         private const float OffsetY = .1f;
@@ -23,64 +22,48 @@ namespace Result.Task2.Code.Game
         private CardsFactory _factory;
 
         [OnAwake]
-        private void AwakeThis()
-        {
-            try
-            {
-                _factory = GetComponent<CardsFactory>();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-        }
+        private void AwakeThis() =>
+            _factory = GetComponent<CardsFactory>();
 
         [OnStart]
         private void StartThis()
         {
-            try
-            {
-                Model.EventManager.AddAction($"{_nameCollection}Changed", MoveCards);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
+            Model.EventManager.AddAction($"{_collectionType}Changed", MoveCards);
+            Model.EventManager.AddParameterAction<string>($"{_collectionType}RemoveCard", RemoveCard);
         }
 
         [OnDestroy]
         private void DestroyThis()
         {
-            try
-            {
-                Model.EventManager.RemoveAction($"{_nameCollection}Changed", MoveCards);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
+            Model.EventManager.RemoveAction($"{_collectionType}Changed", MoveCards);
+            Model.EventManager.RemoveParameterAction<string>($"{_collectionType}RemoveCard", RemoveCard);
 
             foreach (CardView card in _collection)
-                UnSubscribe(card);
+                card.OnClickHandler -= ClickOnCard;
         }
 
         private void MoveCards()
         {
-            string cardId = Model.Get<List<CardData>>(_nameCollection)[^1].ID;
+            string cardId = Model.Get<CollectionData>(_collectionType.ToString()).CardDatas[^1].ID;
 
-            CardView card = _factory.GetCard(cardId, _nameCollection, _parent);
+            CardView card = _factory.GetCard(cardId, _parent);
             _collection.Add(card);
-            card.CgangedCollectionHandler += ChangedCollection;
+            card.OnClickHandler += ClickOnCard;
 
             StartMove(cardId);
         }
 
-        private void ChangedCollection(CardView card)
+        private void RemoveCard(string cardId)
         {
-            UnSubscribe(card);
+            CardView card = _collection.Find(card => card.Id == cardId);
+            card.OnClickHandler -= ClickOnCard;
+            
             _collection.Remove(card);
-            StartMove(string.Empty);
+            StartMove(cardId);
         }
+
+        private void ClickOnCard(CardView card) => 
+            Settings.Fsm.Invoke(Keys.ClickOnCard, card.Id, _collectionType);
 
         private void StartMove(string cardId)
         {
@@ -90,7 +73,7 @@ namespace Result.Task2.Code.Game
 
                 Vector2 targetPoint = GetTargetPoint(_collection.Count, i, _parent.position);
 
-                card.MoveTo(targetPoint, i, callBack: card.Id == cardId, _colliderEnable);
+                card.MoveTo(targetPoint, i, callBack: card.Id == cardId, _colliderEnableBeforeCardMove);
             }
         }
 
@@ -105,8 +88,5 @@ namespace Result.Task2.Code.Game
 
             return position;
         }
-
-        private void UnSubscribe(CardView card) =>
-            card.CgangedCollectionHandler -= ChangedCollection;
     }
 }

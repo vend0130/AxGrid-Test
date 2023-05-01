@@ -12,26 +12,26 @@ namespace Result.Task2.Code.States
         {
             Model.Set(Keys.Counter, 0);
 
-            List<string> names = AddCollectionNames();
+            List<CardCollectionType> types = AddCollectionTypes();
 
-            foreach (string name in names)
-                Model.Set(name, new List<CardData>());
+            foreach (CardCollectionType type in types)
+                Model.Set(type.ToString(), new CollectionData(type, new List<CardData>()));
 
             Parent.Change(nameof(DormantState));
         }
 
-        private List<string> AddCollectionNames()
+        private List<CardCollectionType> AddCollectionTypes()
         {
-            List<string> names = new List<string>()
+            List<CardCollectionType> types = new List<CardCollectionType>()
             {
-                Keys.FirstCollection,
-                Keys.SecondCollection,
-                Keys.ThirdCollection,
+                CardCollectionType.First,
+                CardCollectionType.Second,
+                CardCollectionType.Third,
             };
 
-            Model.Set(Keys.CollectionsNames, names);
+            Model.Set(Keys.CollectionsNames, types);
 
-            return names;
+            return types;
         }
     }
 }

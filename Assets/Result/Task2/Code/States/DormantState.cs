@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AxGrid.FSM;
+﻿using AxGrid.FSM;
 using AxGrid.Model;
 using Result.Task2.Code.Data;
 
@@ -11,8 +10,7 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
-            bool buttonInteractable =
-                Model.Get<List<CardData>>(Keys.FirstCollection).Count < GameData.MaxCardInCollection;
+            bool buttonInteractable = IsNotFull();
             Model.Set(Keys.DrawCardButton, buttonInteractable);
         }
 
@@ -26,7 +24,19 @@ namespace Result.Task2.Code.States
         }
 
         [Bind(Keys.ClickOnCard)]
-        private void ClickOnCard() =>
+        private void ClickOnCard(string cardId, CardCollectionType collectionType)
+        {
+            if (collectionType != CardCollectionType.First)
+                return;
+
+            Model.Set(Keys.ClickOnCardID, cardId);
+            Model.Set(Keys.ClickOnCardCollection, collectionType);
+
             Parent.Change(nameof(ClickOnCardState));
+        }
+
+        private bool IsNotFull() =>
+            Model.Get<CollectionData>(CardCollectionType.First.ToString())
+                .CardDatas.Count < GameData.MaxCardInCollection;
     }
 }

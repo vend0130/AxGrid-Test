@@ -514,9 +514,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1c7113722f4cdda626141f7ee067e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nameCollection: SecondCollection
+  _collectionType: 1
   _parent: {fileID: 1183673109}
-  _colliderEnable: 0
+  _colliderEnableBeforeCardMove: 1
 --- !u!114 &961394664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,9 +529,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1c7113722f4cdda626141f7ee067e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nameCollection: FirstCollection
+  _collectionType: 0
   _parent: {fileID: 620146504}
-  _colliderEnable: 1
+  _colliderEnableBeforeCardMove: 1
 --- !u!114 &961394665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,9 +544,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1c7113722f4cdda626141f7ee067e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nameCollection: ThirdCollection
+  _collectionType: 2
   _parent: {fileID: 504569930}
-  _colliderEnable: 0
+  _colliderEnableBeforeCardMove: 1
 --- !u!1 &1096141255
 GameObject:
   m_ObjectHideFlags: 0

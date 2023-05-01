@@ -11,18 +11,12 @@ namespace Result.Task2.Code.Game
 
         private readonly List<CardView> _cardsOnScene = new List<CardView>();
 
-        public CardView GetCard(string id, string collectionName, Transform parent)
+        public CardView GetCard(string id, Transform parent)
         {
-            CardView card;
-            if (TryGetCardOnScene(id, out card))
-            {
-                card.ChangeCollection(collectionName);
+            if (TryGetCardOnScene(id, out CardView card))
                 card.transform.SetParent(parent);
-                return card;
-            }
-
-            card = Create(id, parent);
-            card.ChangeCollection(collectionName);
+            else
+                card = Create(id, parent);
 
             return card;
         }
@@ -32,8 +26,9 @@ namespace Result.Task2.Code.Game
             CardView card = Instantiate(_cards.GetRandomElement(),
                 parent.position, Quaternion.identity, parent);
 
-            card.Init(id);
+            card.name += $"-{id}";
 
+            card.Init(id);
             _cardsOnScene.Add(card);
 
             return card;
@@ -41,17 +36,8 @@ namespace Result.Task2.Code.Game
 
         private bool TryGetCardOnScene(string id, out CardView card)
         {
-            foreach (CardView cardOnScene in _cardsOnScene)
-            {
-                if (cardOnScene.Id == id)
-                {
-                    card = cardOnScene;
-                    return true;
-                }
-            }
-
-            card = null;
-            return false;
+            card = _cardsOnScene.Find(cardOnScene => cardOnScene.Id == id);
+            return card != null;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AxGrid.FSM;
+﻿using AxGrid.FSM;
 using Result.Task2.Code.Data;
 
 namespace Result.Task2.Code.States
@@ -10,7 +9,7 @@ namespace Result.Task2.Code.States
         [Enter]
         private void EnterThis()
         {
-            if (Model.Get<List<CardData>>(Keys.FirstCollection).Count >= GameData.MaxCardInCollection)
+            if (IsFull())
             {
                 Parent.Change(nameof(DormantState));
                 return;
@@ -18,7 +17,7 @@ namespace Result.Task2.Code.States
 
             AddData();
 
-            Model.EventManager.Invoke($"{Keys.FirstCollection}Changed");
+            Model.EventManager.Invoke($"{CardCollectionType.First}Changed");
             Parent.Change(nameof(MoveState));
         }
 
@@ -27,10 +26,14 @@ namespace Result.Task2.Code.States
             int counter = Model.GetInt(Keys.Counter);
 
             var data = new CardData($"UniqueID_{counter}");
-            Model.Get<List<CardData>>(Keys.FirstCollection).Add(data);
+            Model.Get<CollectionData>(CardCollectionType.First.ToString()).CardDatas.Add(data);
 
             counter++;
             Model.Set(Keys.Counter, counter);
         }
+
+        private bool IsFull() =>
+            Model.Get<CollectionData>(CardCollectionType.First.ToString())
+                .CardDatas.Count >= GameData.MaxCardInCollection;
     }
 }
