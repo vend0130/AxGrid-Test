@@ -25,7 +25,6 @@ namespace Result.MyTools.Code.Tools.InputFieldComponent
             else
                 inputField.onEndEdit.AddListener(OnValueChanged);
 
-            Model.Set($"{fieldName}Text", "safasf");
             Model.EventManager.AddAction($"On{fieldName}TextChanged", Changed);
         }
 

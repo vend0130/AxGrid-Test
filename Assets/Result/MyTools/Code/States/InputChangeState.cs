@@ -9,15 +9,21 @@ namespace Result.MyTools.Code.States
         [Enter]
         private void EnterThis()
         {
-            Model.Set(Keys.ToggleDragFrogEnable, true);
-            Model.Set(Keys.InptFldFrogNameEnable, !Model.GetBool(Keys.ToggleDragFrogIsOn));
+            SetDataWhenChangedState("Frog", toggle: true, field: !Model.GetBool(Keys.ToggleDragFrogIsOn));
+            SetDataWhenChangedState("PinkFin", toggle: true, field: !Model.GetBool(Keys.ToggleDragPinkFinIsOn));
         }
 
         [Exit]
         private void ExitThis()
         {
-            Model.Set(Keys.ToggleDragFrogEnable, false);
-            Model.Set(Keys.InptFldFrogNameEnable, false);
+            SetDataWhenChangedState("Frog", toggle: false, field: false);
+            SetDataWhenChangedState("PinkFin", toggle: false, field: false);
+        }
+
+        private void SetDataWhenChangedState(string name, bool toggle, bool field)
+        {
+            Model.Set($"ToggleDrag{name}Enable", toggle);
+            Model.Set($"InptFld{name}NameFieldEnable", field);
         }
 
         [Bind("BeginDrag")]
@@ -31,19 +37,24 @@ namespace Result.MyTools.Code.States
         private void ToggleClick(string name, bool value)
         {
             if (name == Keys.ToggleDragFrog)
-            {
-                Model.Set(Keys.FrogDragState, value);
-                Model.Set(Keys.InptFldFrogNameEnable, !value);
-            }
+                SetDataWhenClickOnToggle("Frog", value);
+            else if (name == Keys.ToggleDragPinkFin)
+                SetDataWhenClickOnToggle("PinkFin", value);
         }
-        
+
+        private void SetDataWhenClickOnToggle(string name, bool value)
+        {
+            Model.Set($"{name}DragState", value);
+            Model.Set($"InptFld{name}NameFieldEnable", !value);
+        }
+
         [Bind("OnInputField")]
         private void InputField(string name)
         {
             if (name == "FrogNameField")
-            {
                 Model.Set(Keys.FrogNameText, Model.GetString(Keys.FrogNameInputField));
-            }
+            else if (name == "PinkFinNameField")
+                Model.Set(Keys.PinkFinNameText, Model.GetString(Keys.PinkFinInputField));
         }
     }
 }

@@ -11,90 +11,98 @@ namespace Result.MyTools.Code.Tools.DragAndDrop
     [RequireComponent(typeof(SortingGroup))]
     public class DragAndDrop2DBind : PointerHandler
     {
-        [SerializeField] private string _fieldName;
-        [SerializeField] private int _defaultOrder = 1;
-        [SerializeField] private int _dragOrder = 2;
-        [Range(0, 100), SerializeField] private int _dragScale = 2;
-        [SerializeField] private float _timePath = .15f;
+        [SerializeField] private string objectName;
+        [SerializeField] private int defaultOrder = 1;
+        [SerializeField] private int dragOrder = 2;
+        [Range(0, 100), SerializeField] private int dragScaleInPercents = 25;
+        [SerializeField] private float timePath = .15f;
 
         private const string NotDragState = "NotDrag";
         private const string BeginDragState = "BeginDrag";
         private const string DragState = "Drag";
         private const string EndDragState = "EndDrag";
 
-        private Collider2D _collider;
-        private SortingGroup _sorting;
-        private Vector2 _previousPoint;
-        private Vector2 _offset;
-        private Vector3 _defaultScale;
+        private Collider2D currentCollider;
+        private SortingGroup sorting;
+        private Vector2 previousPoint;
+        private Vector2 offset;
+        private Vector3 defaultScale;
 
-        private Mover _mover;
-        private Scaler _scaler;
+        private Mover mover;
+        private Scaler scaler;
 
         [OnAwake]
         private void AwakeThis()
         {
-            _collider = GetComponent<Collider2D>();
-            _sorting = GetComponent<SortingGroup>();
+            currentCollider = GetComponent<Collider2D>();
+            sorting = GetComponent<SortingGroup>();
 
-            _fieldName = string.IsNullOrEmpty(_fieldName) ? name : _fieldName;
-            _defaultScale = transform.localScale;
-            _sorting.sortingOrder = _defaultOrder;
+            objectName = string.IsNullOrEmpty(objectName) ? name : objectName;
+            defaultScale = transform.localScale;
+            sorting.sortingOrder = defaultOrder;
 
-            _mover = gameObject.AddComponent<Mover>();
-            _scaler = gameObject.AddComponent<Scaler>();
+            mover = gameObject.AddComponent<Mover>();
+            scaler = gameObject.AddComponent<Scaler>();
 
-            Model.EventManager.AddParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
+            Model.EventManager.AddParameterAction<bool>($"On{objectName}DragStateChanged", ChangeState);
 
             CallEvents(NotDragState);
         }
 
         [OnDestroy]
         private void DestroyThis() =>
-            Model.EventManager.RemoveParameterAction<bool>($"On{_fieldName}DragStateChanged", ChangeState);
+            Model.EventManager.RemoveParameterAction<bool>($"On{objectName}DragStateChanged", ChangeState);
 
         protected override void OnDown(PointerEventData eventData)
         {
-            _scaler.Stop();
+            if (mover.CurrentPath != null && mover.CurrentPath.IsPlaying)
+            {
+                pointerId = null;
+                return;
+            }
 
-            _sorting.sortingOrder = _dragOrder;
+            scaler.Stop();
+
+            sorting.sortingOrder = dragOrder;
             pointerId = eventData.pointerId;
-            _offset = (Vector2)transform.position - GetWorldPosition(eventData);
-            _previousPoint = transform.position;
 
-            _scaler.Play(_timePath, _defaultScale + Vector3.one * ((float)_dragScale / 100));
+            offset = (Vector2)transform.position - GetWorldPosition(eventData);
+            previousPoint = transform.position;
+
+            scaler.Play(timePath, defaultScale + Vector3.one * ((float)dragScaleInPercents / 100));
             CallEvents(BeginDragState);
         }
 
         protected override void Drag(PointerEventData eventData)
         {
-            transform.position = GetWorldPosition(eventData) + _offset;
+            transform.position = GetWorldPosition(eventData) + offset;
             CallEvents(DragState);
         }
 
         private void ChangeState(bool value)
         {
-            _collider.enabled = value;
+            currentCollider.enabled = value;
             OnUp();
         }
 
-        [Bind("On{_fieldName}FailDrop")]
+        [Bind("{" + nameof(objectName) + "}FailDrop")]
         private void FailDrop() =>
-            _mover.Play(_timePath, _previousPoint);
+            mover.Play(timePath, previousPoint);
 
         protected override void OnUp()
         {
             pointerId = null;
-            _sorting.sortingOrder = _defaultOrder;
+            sorting.sortingOrder = defaultOrder;
 
-            _scaler.Play(_timePath, _defaultScale);
+            scaler.Play(timePath, defaultScale);
             CallEvents(EndDragState);
         }
 
         private void CallEvents(string eventName)
         {
-            Settings.Fsm?.Invoke(eventName, _fieldName);
-            Settings.Fsm?.Invoke($"{_fieldName}Drag", eventName);
+            Model.Set($"{objectName}DragPosition", (Vector2)transform.position);
+            Settings.Fsm?.Invoke(eventName, objectName);
+            Settings.Fsm?.Invoke($"{objectName}Drag", eventName);
         }
     }
 }

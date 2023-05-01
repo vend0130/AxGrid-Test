@@ -18,6 +18,7 @@ namespace Result.MyTools.Code.Tools.ToggleComponent
             toggle = GetComponent<Toggle>();
             toggleName = string.IsNullOrEmpty(toggleName) ? name : toggleName;
             Model.EventManager.AddAction($"OnToggle{toggleName}IsOnChanged", OnItemValue);
+            Log.Debug(name + "  " + $"OnToggle{toggleName}IsOnChanged");
         }
 
         [OnStart]
