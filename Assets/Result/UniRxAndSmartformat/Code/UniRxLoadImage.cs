@@ -15,7 +15,7 @@ namespace Result.UniRxAndSmartformat.Code
         [SerializeField] private TextMeshProUGUI tmp;
         [SerializeField] private Button loadButton;
         [SerializeField] private Image image;
-        [SerializeField, TextArea(2, 2)] private List<string> textureURLs;
+        [SerializeField, TextArea(1, 2)] private List<string> textureURLs;
 
         private Texture2D currentTexture;
         private IDisposable requestDisposable;
@@ -43,7 +43,8 @@ namespace Result.UniRxAndSmartformat.Code
 
             string url = textureURLs.GetRandomElement();
 
-            requestDisposable = Load(url).Subscribe(
+            requestDisposable = Load(url).Subscribe
+            (
                 result => SuccessLoad(result.webRequest),
                 exception => FailLoad(exception.Message, url)
             );
@@ -60,7 +61,7 @@ namespace Result.UniRxAndSmartformat.Code
                 .Select(result =>
                 {
                     if (!string.IsNullOrEmpty(result.webRequest.error))
-                        throw new Exception("not correct url");
+                        throw new Exception("invalid link");
 
                     return result;
                 });
@@ -82,7 +83,7 @@ namespace Result.UniRxAndSmartformat.Code
         }
 
         private Rect GetRect() =>
-            new Rect(0.0f, 0.0f, currentTexture.width, currentTexture.height);
+            new Rect(0, 0, currentTexture.width, currentTexture.height);
 
         private void FailLoad(string error, string url)
         {
